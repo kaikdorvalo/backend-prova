@@ -33,4 +33,8 @@ export class CourseService {
     public async getCourseWithDisciplines(id: string) {
         return await this.courseModel.findById(id).populate("disciplines")
     }
+
+    public async removeDiscipline(courseId: string, disciplineId: string) {
+        return this.courseModel.updateOne({ _id: courseId }, { $pull: { disciplines: disciplineId } })
+    }
 }

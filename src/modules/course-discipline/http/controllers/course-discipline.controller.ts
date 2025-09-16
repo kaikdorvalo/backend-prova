@@ -5,6 +5,7 @@ import { CourseDisciplineService } from "../../core/services/course-discipline.s
 import { CourseIdDto } from "src/modules/course/http/dto/course-id.dto";
 import { Response } from "express";
 import { CreateDisciplineDto } from "src/modules/discipline/http/dto/create-discipline";
+import { DeleteDisciplineFromCourseDto } from "../dto/delete-discipline-from-course.dto";
 
 @Controller('course-disciplines')
 export class CourseDisciplineContoller {
@@ -14,11 +15,16 @@ export class CourseDisciplineContoller {
 
     @Post('/disciplines')
     public async createDiscipline(@Body() dto: CreateDisciplineDto, @Res() response: Response) {
-        return this.service.create(dto, response)
+        return this.service.createDiscipline(dto, response)
     }
 
     @Delete('/courses/:id')
     public async deleteCourseById(@Param() params: CourseIdDto, @Res() response: Response) {
         return this.service.deleteCourseById(params.id, response)
+    }
+
+    @Delete('courses/:course/disciplines/:discipline')
+    public async deleteDisciplineFromCourse(@Param() params: DeleteDisciplineFromCourseDto, @Res() response: Response) {
+        return this.service.deleteDisciplineFromCourse(params.course, params.discipline, response)
     }
 }

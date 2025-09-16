@@ -11,8 +11,8 @@ export class CourseDisciplineService {
         private readonly disciplineService: DisciplineService
     ) { }
 
-    public async create(dto: CreateDisciplineDto, response: Response) {
-        const course = this.courseService.getByID(dto.id)
+    public async createDiscipline(dto: CreateDisciplineDto, response: Response) {
+        const course = await this.courseService.getByID(dto.id)
         if (course) {
             const discipline = await this.disciplineService.create(dto.name, dto.id)
             await this.courseService.addDiscipline(dto.id, discipline._id)
@@ -30,5 +30,26 @@ export class CourseDisciplineService {
         }
 
         throw new NotFoundException()
+    }
+
+    public async deleteDisciplineFromCourse(course: string, discipline: string, response: Response) {
+        console.log("aqui")
+        const foundCourse = await this.courseService.getCourseWithDisciplines(course)
+        const foundDiscipline = await this.disciplineService.getById(discipline)
+
+        console.log(foundCourse)
+
+        console.log(foundDiscipline)
+
+        if (!foundCourse || !foundDiscipline) {
+            return response.status(HttpStatus.NOT_FOUND).send()
+        }
+
+        if (foundCourse.disciplines.find((disc) => disc._id == foundDiscipline.id)) {
+            await this.courseService.removeDiscipline(course, discipline)
+            return response.status(HttpStatus.NO_CONTENT).send()
+        }
+
+        return response.status(HttpStatus.NOT_FOUND).send()
     }
 }

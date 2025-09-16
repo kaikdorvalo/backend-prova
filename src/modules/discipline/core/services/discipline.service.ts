@@ -19,4 +19,12 @@ export class DisciplineService {
     public async deleteMany(courseId: ObjectId) {
         return await this.disciplineModel.deleteMany({ course: courseId })
     }
+
+    public async updateName(id: string, name: string) {
+        return await this.disciplineModel.updateOne({ _id: id }, { name: name })
+    }
+
+    public async getById(id: string) {
+        return await this.disciplineModel.findById(id)
+    }
 }

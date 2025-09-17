@@ -13,6 +13,11 @@ export class CourseController {
         return this.courseService.getByID(params.id)
     }
 
+    @Get()
+    public async getAllCourses() {
+        return this.courseService.getAll()
+    }
+
     @Get('/:id/disciplines')
     public async getCourseWithDisciplines(@Param() params: CourseIdDto) {
         return this.courseService.getCourseWithDisciplines(params.id)
@@ -25,6 +30,6 @@ export class CourseController {
 
     @Put('/:id')
     public async updateCourseName(@Param() params: CourseIdDto, @Body() dto: UpdateCourseNameDto) {
-        return this.courseService.updateName(params.id, dto.name)
+        return this.courseService.update(params.id, dto)
     }
 }

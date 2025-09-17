@@ -33,13 +33,8 @@ export class CourseDisciplineService {
     }
 
     public async deleteDisciplineFromCourse(course: string, discipline: string, response: Response) {
-        console.log("aqui")
         const foundCourse = await this.courseService.getCourseWithDisciplines(course)
         const foundDiscipline = await this.disciplineService.getById(discipline)
-
-        console.log(foundCourse)
-
-        console.log(foundDiscipline)
 
         if (!foundCourse || !foundDiscipline) {
             return response.status(HttpStatus.NOT_FOUND).send()
